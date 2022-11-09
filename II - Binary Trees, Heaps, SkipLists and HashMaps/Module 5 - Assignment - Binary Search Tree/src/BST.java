@@ -85,6 +85,7 @@ public class BST<T extends Comparable<? super T>> {
         }
         BSTNode<T> dummy = new BSTNode<>(null);
         root = recursiveRemove(root, data, dummy);
+        size -= 1;
         return dummy.getData();
     }
 
@@ -99,9 +100,9 @@ public class BST<T extends Comparable<? super T>> {
             removedNode.setData(node.getData());
             if (node.getLeft() == null & node.getRight() == null) {
                 node = null;
-            } else if (node.getLeft() != null) {
+            } else if (node.getLeft() != null & node.getRight() == null) {
                 node = node.getLeft();
-            } else if (node.getRight() != null) {
+            } else if (node.getRight() != null & node.getLeft() == null) {
                 node = node.getRight();
             } else {
                 // Remove successor
@@ -116,9 +117,10 @@ public class BST<T extends Comparable<? super T>> {
     private BSTNode<T> recursiveRemoveSuccessor(BSTNode<T> node, BSTNode<T> successorNode) {
         if (node.getLeft() == null) {
             successorNode.setData(node.getData());
-            return null;
+            BSTNode<T> dummy = new BSTNode<>(null);
+            node = recursiveRemove(node, node.getData(), dummy);
         } else {
-            node = recursiveRemoveSuccessor(node.getLeft(), successorNode);
+            node.setLeft(recursiveRemoveSuccessor(node.getLeft(), successorNode));
         }
         return node;
     }
