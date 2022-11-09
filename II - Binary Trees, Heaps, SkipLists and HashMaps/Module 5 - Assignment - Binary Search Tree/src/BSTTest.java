@@ -87,12 +87,14 @@ public class BSTTest {
     test.add(15);
     test.add(5);
     test.add(10);
-    test.remove(5);
+    Integer returnVariable = test.remove(5);
+    Integer expectedReturn = 5;
     String testList = traversal.preorder(test.getRoot()).toString();
     String expectedList = "[50, 15, 10, 75]";
     System.out.println(expectedList);
     System.out.println(testList);
     assertEquals(expectedList, testList);
+    assertEquals(expectedReturn, returnVariable);
   }
 
   @Test
@@ -109,6 +111,40 @@ public class BSTTest {
     test.remove(15);
     String testList = traversal.preorder(test.getRoot()).toString();
     String expectedList = "[50, 20, 5, 25, 75, 100]";
+    System.out.println(expectedList);
+    System.out.println(testList);
+    assertEquals(expectedList, testList);
+  }
+
+  @Test
+  public void testRemoveRootNodeTwoChild() {
+    Traversals<Integer> traversal = new Traversals<>();
+    BST<Integer> test = new BST<>();
+    test.add(1);
+    test.add(0);
+    test.add(2);
+    test.add(3);
+    test.remove(1);
+    String testList = traversal.preorder(test.getRoot()).toString();
+    String expectedList = "[2, 0, 3]";
+    System.out.println(expectedList);
+    System.out.println(testList);
+    assertEquals(expectedList, testList);
+  }
+
+  @Test
+  public void testRemoveNodeTwoChildSuccessorWithOneChild() {
+    Traversals<Integer> traversal = new Traversals<>();
+    BST<Integer> test = new BST<>();
+    test.add(1);
+    test.add(0);
+    test.add(5);
+    test.add(4);
+    test.add(2);
+    test.add(3);
+    test.remove(1);
+    String testList = traversal.preorder(test.getRoot()).toString();
+    String expectedList = "[2, 0, 5, 4, 3]";
     System.out.println(expectedList);
     System.out.println(testList);
     assertEquals(expectedList, testList);
