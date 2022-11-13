@@ -37,6 +37,29 @@ public class ExternalChainingHashMap<K, V> {
   }
 
   /**
+   * Returns whether or not the key is in the map.
+   *
+   * @param key The key to search for in the map. You may assume that the
+   *            key is never null.
+   * @return true if the key is contained within the map, false otherwise.
+   */
+  public boolean containsKey(K key) {
+    // WRITE YOUR CODE HERE (DO NOT MODIFY METHOD HEADER)!
+    int index = Math.abs(key.hashCode() % table.length);
+    if (table[index] != null) {
+      ExternalChainingMapEntry<K, V> existed = table[index];
+      while (existed != null) {
+        if (key == existed.getKey()) {
+          return true;
+        } else {
+          existed = existed.getNext();
+        }
+      }
+    }
+    return false;
+  }
+
+  /**
    * Adds the given key-value pair to the map. If an entry in the map
    * already has this key, replace the entry's value with the new one
    * passed in.
