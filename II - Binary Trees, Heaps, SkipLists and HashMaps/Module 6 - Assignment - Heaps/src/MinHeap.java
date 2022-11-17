@@ -87,10 +87,32 @@ public class MinHeap<T extends Comparable<? super T>> {
     backingArray[1] = backingArray[size];
     backingArray[size] = null;
     size -= 1;
-    downheap(1);
+    //downheap(1);
+    heapify(1);
     return removedData;
   }
 
+  private void heapify(int index) {
+    if (index < 0) {
+      return;
+    }
+    int leftChild = index * 2;
+    int rightChild = index * 2 + 1;
+    int min = index;
+    if (leftChild <= size && backingArray[min].compareTo(backingArray[leftChild]) > 0) {
+      min = leftChild;
+    }
+    if (rightChild <= size && backingArray[min].compareTo(backingArray[rightChild]) > 0) {
+      min = rightChild;
+    }
+    if (min != index) {
+      T swap = backingArray[index];
+      backingArray[index] = backingArray[min];
+      backingArray[min] = swap;
+      heapify(min);
+    }
+  }
+  
   private void downheap(int index) {
     int leftChild = index * 2;
     int rightChild = index * 2 + 1;
