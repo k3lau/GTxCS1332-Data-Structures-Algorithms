@@ -113,9 +113,10 @@ public class AVL<T extends Comparable<? super T>> {
         node = node.getRight();
       } else {
         // Remove successor
-        AVLNode<T> predecessorNode = new AVLNode<>(null);
-        node.setLeft(recursiveRemoveSuccessor(node.getLeft(), predecessorNode));
-        node.setData(predecessorNode.getData());
+        // AVLNode<T> predecessorNode = new AVLNode<>(null);
+        AVLNode<T> successorNode = new AVLNode<>(null);
+        node.setRight(recursiveRemoveSuccessor(node.getRight(), successorNode));
+        node.setData(successorNode.getData());
       }
     }
     updateHeightAndBF(node);
@@ -133,7 +134,12 @@ public class AVL<T extends Comparable<? super T>> {
     } else {
       node.setLeft(recursiveRemoveSuccessor(node.getLeft(), successorNode));
     }
-    updateHeightAndBF(node);
+    if (node != null) {
+      updateHeightAndBF(node);
+      if (node.getBalanceFactor() > 1 || node.getBalanceFactor() < -1) {
+        node = balance(node);
+      }
+    }
     return node;
   }
 
@@ -157,7 +163,7 @@ public class AVL<T extends Comparable<? super T>> {
    *
    * @param currentNode The node to update the height and balance factor of.
    */
-  private void updateHeightAndBF(AVLNode<T> currentNode) {
+  public void updateHeightAndBF(AVLNode<T> currentNode) {
     // WRITE YOUR CODE HERE (DO NOT MODIFY METHOD HEADER)!
     int leftHeight = (currentNode.getLeft() == null) ? -1 : currentNode.getLeft().getHeight();
     int rightHeight = (currentNode.getRight() == null) ? -1 : currentNode.getRight().getHeight();
@@ -248,7 +254,7 @@ public class AVL<T extends Comparable<? super T>> {
    * @param cur The current node under inspection.
    * @return The AVLNode that the caller should return.
    */
-  private AVLNode<T> balance(AVLNode<T> currentNode) {
+  public AVLNode<T> balance(AVLNode<T> currentNode) {
     // WRITE YOUR CODE HERE (DO NOT MODIFY METHOD HEADER)!
 
     /* First, we update the height and balance factor of the current node. */
