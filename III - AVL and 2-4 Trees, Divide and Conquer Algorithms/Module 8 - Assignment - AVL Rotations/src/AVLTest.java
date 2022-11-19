@@ -101,4 +101,79 @@ public class AVLTest {
     System.out.println(testList);
     assertEquals(expectedList, testList);
   }
+
+  @Test
+  public void testRemoveLeftRight() {
+    Traversals<Integer> traversal = new Traversals<>();
+    AVL<Integer> test = new AVL<>();
+    test.add(2);
+    test.add(0);
+    test.add(3);
+    test.add(1);
+    test.remove(2);
+    String testList = traversal.preorder(test.getRoot()).toString();
+    // String expectedList = "[2, 0, 1, 4, 3, 6, 5]";
+    String expectedList = "[1, 0, 3]";
+    System.out.println(expectedList);
+    System.out.println(testList);
+    assertEquals(expectedList, testList);
+  }
+
+  @Test
+  public void testRemoveLeftRightHeightFour() {
+    Traversals<Integer> traversal = new Traversals<>();
+    AVL<Integer> test = new AVL<>();
+    test.add(7);
+    test.add(4);
+    test.add(10);
+    test.add(2);
+    test.add(6);
+    test.add(8);
+    test.add(11);
+    test.add(0);
+    test.add(3);
+    test.add(5);
+    test.add(9);
+    test.add(1);
+    test.remove(4);
+    String testList = traversal.preorder(test.getRoot()).toString();
+    // String expectedList = "[2, 0, 1, 4, 3, 6, 5]";
+    String expectedList = "[7, 2, 0, 1, 5, 3, 6, 10, 8, 9, 11]";
+    System.out.println(expectedList);
+    System.out.println(testList);
+    assertEquals(expectedList, testList);
+  }
+
+  @Test
+  public void testRemoveLeftRightHeightFive() {
+    Traversals<Integer> traversal = new Traversals<>();
+    AVL<Integer> test = new AVL<>();
+    test.add(7);
+    test.add(4);
+    test.add(15);
+    test.add(1);
+    test.add(6);
+    test.add(10);
+    test.add(18);
+    test.add(0);
+    test.add(3);
+    test.add(5);
+    test.add(8);
+    test.add(13);
+    test.add(16);
+    test.add(19);
+    test.add(2);
+    test.add(9);
+    test.add(11);
+    test.add(14);
+    test.add(17);
+    test.add(12);
+    test.remove(7);
+    String testList = traversal.preorder(test.getRoot()).toString();
+    // String expectedList = "[2, 0, 1, 4, 3, 6, 5]";
+    String expectedList = "[8, 4, 1, 0, 3, 2, 6, 5, 15, 11, 10, 9, 13, 12, 14, 18, 16, 17, 19]";
+    System.out.println(expectedList);
+    System.out.println(testList);
+    assertEquals(expectedList, testList);
+  }
 }
