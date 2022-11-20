@@ -27,6 +27,24 @@ public class Sorting {
    */
   public static <T> void bubbleSort(T[] arr, Comparator<T> comparator) {
     // WRITE YOUR CODE HERE (DO NOT MODIFY METHOD HEADER)!
+    int stopIndex = arr.length - 1;
+    int loopIndex;
+    int lastSwapIndex;
+    while (stopIndex != 0) {
+      loopIndex = 0;
+      lastSwapIndex = 0;
+      while (loopIndex < stopIndex) {
+        int compare = comparator.compare(arr[loopIndex], arr[loopIndex + 1]);
+        if (compare > 0) {
+          T temp = arr[loopIndex];
+          arr[loopIndex] = arr[loopIndex + 1];
+          arr[loopIndex + 1] = temp;
+          lastSwapIndex = loopIndex;
+        }
+        loopIndex++;
+      }
+      stopIndex = lastSwapIndex;
+    }
   }
 
   /**
@@ -49,6 +67,21 @@ public class Sorting {
    */
   public static <T> void selectionSort(T[] arr, Comparator<T> comparator) {
     // WRITE YOUR CODE HERE (DO NOT MODIFY METHOD HEADER)!
+    int maxIndex = 0;
+    for (int outsideLoop = arr.length - 1; outsideLoop >= 0; outsideLoop--) {
+      maxIndex = 0;
+      for (int insideLoop = 0; insideLoop <= outsideLoop; insideLoop++) {
+        if (maxIndex != insideLoop) {
+          int compare = comparator.compare(arr[maxIndex], arr[insideLoop]);
+          if (compare < 0) {
+            maxIndex = insideLoop;
+          }
+        }
+      }
+      T temp = arr[outsideLoop];
+      arr[outsideLoop] = arr[maxIndex];
+      arr[maxIndex] = temp;
+    }
   }
 
   /**
@@ -71,5 +104,18 @@ public class Sorting {
    */
   public static <T> void insertionSort(T[] arr, Comparator<T> comparator) {
     // WRITE YOUR CODE HERE (DO NOT MODIFY METHOD HEADER)!
+    int mainIndex = 1;
+    int insideLoop = 0;
+
+    while (mainIndex <= arr.length - 1) {
+      insideLoop = mainIndex;
+      while (insideLoop >= 1 && comparator.compare(arr[insideLoop], arr[insideLoop - 1]) < 0) {
+        T temp = arr[insideLoop];
+        arr[insideLoop] = arr[insideLoop - 1];
+        arr[insideLoop - 1] = temp;
+        insideLoop--;
+      }
+      mainIndex++;
+    }
   }
 }
