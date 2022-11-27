@@ -39,6 +39,24 @@ public class Sorting {
    */
   public static <T> void mergeSort(T[] arr, Comparator<T> comparator) {
     // WRITE YOUR CODE HERE (DO NOT MODIFY METHOD HEADER)!
+    int rightIndex = arr.length;
+    int leftIndex = 0;
+    recursiveMergeSort(arr, leftIndex, rightIndex, comparator);
+
+  }
+
+  private static <T> T[] recursiveMergeSort(T[] arr, int leftIndex, int rightIndex, Comparator<T> comparator) {
+    int splitIndex = (rightIndex - leftIndex + 1) / 2;
+    if (rightIndex - leftIndex + 1 == 1) {
+      return arr;
+    }
+    recursiveMergeSort(arr, leftIndex, rightIndex - 1, comparator);
+    recursiveMergeSort(arr, splitIndex, rightIndex, comparator);
+    T[] newArr = (T[]) new Comparator<T>[rightIndex - leftIndex + 1];
+    int mainIndex = 0;
+    if (comparator.compare(arr[leftIndex], arr[rightIndex]) > 0) {
+      newArr[mainIndex] = arr[rightIndex];
+    }
   }
 
   /**
