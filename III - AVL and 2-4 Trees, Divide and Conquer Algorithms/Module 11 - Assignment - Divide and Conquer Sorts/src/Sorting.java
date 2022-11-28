@@ -1,5 +1,4 @@
 import java.util.Comparator;
-import java.util.List;
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -39,23 +38,49 @@ public class Sorting {
    */
   public static <T> void mergeSort(T[] arr, Comparator<T> comparator) {
     // WRITE YOUR CODE HERE (DO NOT MODIFY METHOD HEADER)!
-    int rightIndex = arr.length;
-    int leftIndex = 0;
-    recursiveMergeSort(arr, leftIndex, rightIndex, comparator);
-
+    recursiveMergeSort(arr, 0, arr.length - 1, comparator);
   }
 
-  private static <T> T[] recursiveMergeSort(T[] arr, int leftIndex, int rightIndex, Comparator<T> comparator) {
-    int splitIndex = (rightIndex - leftIndex + 1) / 2;
+  private static <T> void recursiveMergeSort(T[] arr, int leftIndex, int rightIndex, Comparator<T> comparator) {
     if (rightIndex - leftIndex + 1 == 1) {
-      return arr;
+      return;
     }
-    recursiveMergeSort(arr, leftIndex, rightIndex - 1, comparator);
-    recursiveMergeSort(arr, splitIndex, rightIndex, comparator);
-    T[] newArr = (T[]) new Comparator<T>[rightIndex - leftIndex + 1];
+    int splitIndex = (rightIndex - leftIndex - 1) / 2 + leftIndex;
+    recursiveMergeSort(arr, leftIndex, splitIndex, comparator);
+    recursiveMergeSort(arr, splitIndex + 1, rightIndex, comparator);
+    merge(arr, leftIndex, splitIndex, rightIndex, comparator);
+  }
+
+  @SuppressWarnings("unchecked")
+  private static <T> void merge(T[] arr, int leftIndex, int splitIndex, int rightIndex, Comparator<T> comparator) {
+    Object[] newArr = new Object[rightIndex - leftIndex + 1];
+    int i = leftIndex;
+    int j = splitIndex + 1;
     int mainIndex = 0;
-    if (comparator.compare(arr[leftIndex], arr[rightIndex]) > 0) {
-      newArr[mainIndex] = arr[rightIndex];
+    while (i <= splitIndex && j <= rightIndex) {
+      if (comparator.compare(arr[i], arr[j]) > 0) {
+        newArr[mainIndex] = arr[j];
+        j++;
+      } else {
+        newArr[mainIndex] = arr[i];
+        i++;
+      }
+      mainIndex++;
+    }
+    while (i <= splitIndex) {
+      newArr[mainIndex] = arr[i];
+      mainIndex++;
+      i++;
+    }
+    while (j <= rightIndex) {
+      newArr[mainIndex] = arr[j];
+      mainIndex++;
+      j++;
+    }
+    mainIndex = leftIndex;
+    for (int x = 0; x < newArr.length; x++) {
+      arr[mainIndex] = (T) newArr[x];
+      mainIndex++;
     }
   }
 
@@ -89,7 +114,49 @@ public class Sorting {
    *
    * @param arr The array to be sorted.
    */
+  @SuppressWarnings("unchecked")
   public static void lsdRadixSort(int[] arr) {
     // WRITE YOUR CODE HERE (DO NOT MODIFY METHOD HEADER)!
+    int iteration = 1;
+    int x;
+    for (int i = 0; i < arr.length; i++) {
+      x = findDigit(arr[i]);
+      if (x > iteration) {
+        iteration = x;
+      }
+    }
+    Queue<Integer>[] bucket = (Queue<Integer>[]) new Queue[19];
+    for (int k = 0; k < bucket.length; k++) {
+      bucket[k] = new LinkedList<Integer>();
+    }
+    int[] POWERS_OF_10 = { 1, 10, 100, 1000, 10000, 100000, 1000000, 10000000, 100000000, 1000000000 };
+    for (int i = 1; i <= iteration; i++) {
+      int rightBase = POWERS_OF_10[i - 1];
+      for (int j = 0; j < arr.length; j++) {
+        int bucketIndex = (arr[j] / rightBase) % 10 + 9;
+        bucket[bucketIndex].add(arr[j]);
+      }
+      int index = 0;
+      for (int k = 0; k < bucket.length; k++) {
+        while (bucket[k].peek() != null) {
+          arr[index] = bucket[k].remove();
+          index++;
+        }
+      }
+    }
+  }
+
+  private static int findDigit(int num) {
+    int digit = 1;
+    // Use negative to cover the edge case of abs(max negative integer)
+    // is greater than max positive integer
+    num = -(Math.abs(num));
+    num = num / 10;
+
+    while (num < 0) {
+      digit++;
+      num = num / 10;
+    }
+    return digit;
   }
 }
