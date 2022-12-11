@@ -53,7 +53,9 @@ public class GraphAlgorithms {
     Queue<Edge<T>> PQ = new PriorityQueue<>();
     visitedSet.add(start);
     for (VertexDistance<T> vDistance : graph.getAdjList().get(start)) {
-      PQ.add(new Edge<>(start, vDistance.getVertex(), vDistance.getDistance()));
+      if (!visitedSet.contains(vDistance.getVertex())) {
+        PQ.add(new Edge<>(start, vDistance.getVertex(), vDistance.getDistance()));
+      }
     }
 
     while (PQ.size() != 0 && visitedSet.size() != graph.getVertices().size()) {
@@ -63,11 +65,13 @@ public class GraphAlgorithms {
         MST.add(new Edge<>(edge.getV(), edge.getU(), edge.getWeight()));
         visitedSet.add(edge.getV());
         for (VertexDistance<T> vDistance : graph.getAdjList().get(edge.getV())) {
-          PQ.add(new Edge<>(edge.getV(), vDistance.getVertex(), vDistance.getDistance()));
+          if (!visitedSet.contains(vDistance.getVertex())) {
+            PQ.add(new Edge<>(edge.getV(), vDistance.getVertex(), vDistance.getDistance()));
+          }
         }
       }
     }
-    if (MST.size() == 0) {
+    if (MST.size() < (graph.getVertices().size() - 1) * 2) {
       MST = null;
     }
     return MST;
